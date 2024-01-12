@@ -1,0 +1,17 @@
+{
+    "name": "Segurobet",
+    "short_name": "bet",
+    "description": "Testing PWA",
+    "start_url": "/index.html",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#000000",
+    "icons": [
+      {
+        "src": "4436481.png",
+        "sizes": "750x750",
+        "type": "image/png"
+      }
+    ]
+  }
+  

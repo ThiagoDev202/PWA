@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+  <title>index</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css" />
+  <link rel="manifest" href="manifest.json" />
+
+  <script src="sw.js"></script>
+
+  <body>
+    <div class="w3-container">
+      <h2>Baixe o aplicativo</h2>
+      <p>Clique no botão para realizar o download</p>
+
+      <div class="w3-light-grey" style="height: 18px; width: calc(100% - 77%)">
+        <div id="myBar" class="w3-container w3-green" style="height: 18px; width: 0%"></div>
+      </div>
+
+      <p id="myP">Baixar Aplicativo</p>
+    </div>
+
+    <script>
+      function isDesktopChrome() {
+        return true;
+        // return (
+        //   window.matchMedia("(min-width: 769px)").matches && /Chrome/.test(navigator.userAgent)
+        // );
+      }
+
+      function generateDownloadButton() {
+        // if (!isDesktopChrome()) {
+        //   // Se não for desktop ou Chrome, ocultar a barra e retornar
+        //   document.querySelector(".w3-container").style.display = "none";
+        //   return;
+        // }
+
+        // Criar o novo botão de download
+        var downloadButton = document.createElement("button");
+        downloadButton.id = "downloadBtn";
+        downloadButton.className = "w3-button w3-light-grey";
+        downloadButton.innerHTML = "Download";
+        downloadButton.onclick = function () {
+          move();
+          this.disabled = true;
+        };
+        downloadButton.style.setProperty("margin-left", "15px");
+        downloadButton.style.setProperty("border-radius", "30px");
+
+        // Adicionar o botão ao corpo do documento
+        document.body.appendChild(downloadButton);
+      }
+
+      function move() {
+        var elem = document.getElementById("myBar");
+        var width = 0;
+        var id = setInterval(frame, 18); //Velocidade do intervalo
+
+        function frame() {
+          if (width >= 100) {
+            clearInterval(id);
+            document.getElementById("myP").className = "w3-text-green w3-animate-opacity";
+            document.getElementById("myP").innerHTML = "Download executado com sucesso!";
+          } else {
+            width++;
+            elem.style.width = width + "%";
+            var num = (width * 1) / 100;
+            num = num.toFixed(0);
+            document.getElementById("demo").innerHTML = num;
+          }
+        }
+      }
+
+      // Chamar a função para gerar o botão ao carregar a página
+      generateDownloadButton();
+    </script>
+
+    <script>
+      if ("serviceWorker" in navigator) {
+        navigator.serviceWorker
+          .register("sw.js")
+          .then((registration) => {
+            console.log("Service Worker registrado com sucesso:", registration);
+          })
+          .catch((error) => {
+            console.log("Erro ao registrar o Service Worker:", error);
+          });
+      }
+
+      let deferredPrompt;
+
+      window.addEventListener("beforeinstallprompt", (e) => {
+        deferredPrompt = e;
+        e.preventDefault();
+      });
+
+      const installAppButton = document.getElementById("downloadBtn");
+
+      installAppButton.addEventListener("click", async () => {
+        if (deferredPrompt !== null) {
+          deferredPrompt.prompt();
+          const { outcome } = await deferredPrompt.userChoice;
+          if (outcome === "accepted") {
+            deferredPrompt = null;
+          }
+        }
+      });
+    </script>
+  </body>
+</html>
