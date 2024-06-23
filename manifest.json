@@ -1,6 +1,6 @@
 {
-    "name": "Segurobet",
-    "short_name": "bet",
+    "name": "Project-name",
+    "short_name": "name",
     "description": "Testing PWA",
     "start_url": "/index.html",
     "display": "standalone",
