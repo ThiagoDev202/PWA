@@ -1,6 +1,6 @@
 {
-    "name": "Project-name",
-    "short_name": "name",
+    "name": "PWA-Project",
+    "short_name": "PWA",
     "description": "Testing PWA",
     "start_url": "/index.html",
     "display": "standalone",
